@@ -49,4 +49,21 @@ const postTime = (req, res) => {
     })
 };
 
-module.exports = { getTimes, postTime }
+const deleteTime = (req, res) => {
+  const document = db.doc(`/times/${req.params.id}`)
+  document.get()
+    .then((doc) => {
+      if(!doc.exists){
+        return res.status(404).json({error: 'Not found'})
+      }
+      return document.delete();
+    })
+    .then(() => {
+      return res.json({ message: 'Goodbye!'})
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err.code })
+    })
+}
+
+module.exports = { getTimes, postTime, deleteTime }
