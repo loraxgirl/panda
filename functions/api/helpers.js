@@ -66,4 +66,20 @@ const deleteTime = (req, res) => {
     })
 }
 
-module.exports = { getTimes, postTime, deleteTime }
+const putTime = (req, res) => {
+  if(req.body.id || req.body.createdAt){
+    res.status(403).json({message : `Not Authorized`})
+  }
+  let doc = db.collection('times').doc(`${req.params.id}`);
+  doc.update(req.body)
+    .then(() => {
+      res.json({ message : 'Updated'});
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        error: err.code
+      })
+    })
+}
+
+module.exports = { getTimes, postTime, deleteTime, putTime }
