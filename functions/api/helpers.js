@@ -1,6 +1,27 @@
 const { db } = require('../util/admin');
 
-exports.postTime = (req, res) => {
+const getTimes = (req, res) => {
+  db.collection('times')
+  .orderBy('createdAt', 'desc')
+  .get()
+  .then((data) => {
+    let times = [];
+    data.forEach((doc) => {
+      times.push({
+        id : doc.id,
+        title: doc.data().title,
+        body: doc.data().body,
+        createdAt: doc.data().createdAt,
+      });
+    })
+    return res.json(times)
+  })
+  .catch((err) => {
+    return res.status(500).json({ error: err.code });
+  })
+}
+
+const postTime = (req, res) => {
   if (req.body.body.trim() === ''){
     return res.status(400).json({ body : 'Time field cannot be empty' });
   }
@@ -26,4 +47,6 @@ exports.postTime = (req, res) => {
       res.status(500).json({error: 'Something wen\'t wrong. Please try again later.'});
       console.error(err)
     })
-}
+};
+
+module.exports = { getTimes, postTime }
