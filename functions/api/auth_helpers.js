@@ -140,7 +140,7 @@ const setAvatar = ( req, res) => {
   busboy.end(req.rawBody)
 }
 
-const getUsers = (req, res) => {
+const getUser = (req, res) => {
   let userData = {};
 
   db.doc(`/users/${req.user.email}`)
@@ -156,7 +156,32 @@ const getUsers = (req, res) => {
     console.error(error)
     return res.status(500).json({ error: error.code });
   });
+};
+
+
+/*
+
+🚧 Needs attention 🚧 
+
+🔧 
+Error: Update() requires either a single JavaScript object or an alternating list of field/value pairs that can be followed by an optional precondition. Input is not an object.
+    at updateUser (/Users/mat/Desktop/Development/async-timers/functions/api/auth_helpers.js:173:12)
+🔧 
+
+*/
+const updateUser = (req, res) => {
+  let document = db.collection('users').doc(`${req.user.email}`)
+  console.log(document)
+  document.update(req.body)
+  .then(() => {
+    return res.json({message : 'Updated'})
+  })
+  .catch((error) => {
+    console.error(error);
+    return res.status(500).json({
+      message: "Cannot update the value"
+    })
+  })
 }
 
-module.exports = { login, signup, setAvatar, removeAvatar, getUsers }
-
+module.exports = { login, signup, setAvatar, removeAvatar, getUser, updateUser }
