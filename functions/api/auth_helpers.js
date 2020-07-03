@@ -158,5 +158,5 @@ const getUsers = (req, res) => {
   });
 }
 
-module.exports = { login, signup, setAvatar, removeAvatar }
+module.exports = { login, signup, setAvatar, removeAvatar, getUsers }
 

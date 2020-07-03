@@ -3,7 +3,7 @@ const app = require('express')();
 const auth = require('./util/auth');
 
 const { getTimes, postTime, deleteTime, putTime } = require('./api/helpers');
-const { login, signup, setAvatar, getUser } = require('./api/auth_helpers');
+const { login, signup, setAvatar, getUsers } = require('./api/auth_helpers');
 
 app.get('/times', getTimes);
 app.post('/times', postTime);
@@ -14,7 +14,7 @@ app.put('/times/:id', putTime);
 app.post('/login', login);
 app.post('/signup', signup);
 app.post('/users/image', auth, setAvatar);
-// app.get('/user', auth, getUser);
+app.get('/user', auth, getUsers);
 
 
 exports.api = functions.https.onRequest(app);
