@@ -9,6 +9,7 @@ const getTimes = (req, res) => {
       console.log(data);
       let times = [];
       data.forEach((doc) => {
+        console.log(doc.data());
         times.push({
           userId: doc.userId,
           title: doc.data().title,

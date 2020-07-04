@@ -10,6 +10,6 @@
     },
     "rules": {
         "no-useless-escape":"off",
-        "no-undef":"off"
+        "no-undef":"off"      
     }
 }
