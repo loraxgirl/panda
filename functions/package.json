@@ -8,6 +8,18 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npx eslint . --fix",
+      "npx prettier --write .",
+      "git add"
+    ]
+  },
   "engines": {
     "node": "8"
   },
