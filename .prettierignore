@@ -2,3 +2,5 @@
 functions/.eslintrc.json
 view/.eslintrc.json
 view/src/serviceWorker.js
+README.md
+view/README
