@@ -1,2 +1,2 @@
-# async-timers
+# timepanda
 web host management service
