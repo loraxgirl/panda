@@ -1,32 +1,33 @@
 const { db } = require('../util/admin');
 
 const getTimes = (req, res) => {
+  console.log(req);
   db.collection('times')
-  .where('email', '==', req.user.email)
-  .orderBy('createdAt', 'desc')
-  .get()
-  .then((data) => {
-    let times = [];
-    data.forEach((doc) => {
-      times.push({
-        id : doc.id,
-        title: doc.data().title,
-        body: doc.data().body,
-        createdAt: doc.data().createdAt,
+    .where('email', '==', req.user.email)
+    .get()
+    .then((data) => {
+      console.log(data);
+      let times = [];
+      data.forEach((doc) => {
+        times.push({
+          userId: doc.userId,
+          title: doc.data().title,
+          body: doc.data().body,
+          createdAt: doc.data().createdAt,
+        });
       });
+      return res.json(times);
     })
-    return res.json(times)
-  })
-  .catch((err) => {
-    return res.status(500).json({ error: err.code });
-  })
-}
+    .catch((err) => {
+      return res.status(500).json({ error: err.code });
+    });
+};
 
 const postTime = (req, res) => {
-  if (req.body.body.trim() === ''){
-    return res.status(400).json({ body : 'Time field cannot be empty' });
+  if (req.body.body.trim() === '') {
+    return res.status(400).json({ body: 'Time field cannot be empty' });
   }
-  if(req.body.title.trim() === '' ){
+  if (req.body.title.trim() === '') {
     return res.status(400).json({ title: 'Title field cannot be empty' });
   }
 
@@ -34,8 +35,8 @@ const postTime = (req, res) => {
     email: req.user.email,
     title: req.body.title,
     body: req.body.body,
-    createdAt: new Date().toISOString()
-  }
+    createdAt: new Date().toISOString(),
+  };
 
   db.collection('times')
     .add(newTimeObject)
@@ -43,45 +44,48 @@ const postTime = (req, res) => {
       const resTimeObject = newTimeObject;
       resTimeObject.id = doc.id;
 
-      return res.json(resTimeObject)
+      return res.json(resTimeObject);
     })
-    .catch((err) => {
-      res.status(500).json({error: 'Something wen\'t wrong. Please try again later.'});
-      console.error(err)
-    })
+    .catch(() => {
+      res
+        .status(500)
+        .json({ error: "Something wen't wrong. Please try again later." });
+    });
 };
 
 const deleteTime = (req, res) => {
-  const document = db.doc(`/times/${req.params.id}`)
-  document.get()
+  const document = db.doc(`/times/${req.params.id}`);
+  document
+    .get()
     .then((doc) => {
-      if(!doc.exists){
-        return res.status(404).json({error: 'Not found'})
+      if (!doc.exists) {
+        return res.status(404).json({ error: 'Not found' });
       }
       return document.delete();
     })
     .then(() => {
-      return res.json({ message: 'Goodbye!'})
+      return res.json({ message: 'Goodbye!' });
     })
     .catch((err) => {
-      return res.status(500).json({ error: err.code })
-    })
-}
+      return res.status(500).json({ error: err.code });
+    });
+};
 
 const putTime = (req, res) => {
-  if(req.body.id || req.body.createdAt){
-    res.status(403).json({message : `Not Authorized`})
+  if (req.body.id || req.body.createdAt) {
+    res.status(403).json({ message: `Not Authorized` });
   }
   let doc = db.collection('times').doc(`${req.params.id}`);
-  doc.update(req.body)
+  doc
+    .update(req.body)
     .then(() => {
-      res.json({ message : 'Updated'});
+      res.json({ message: 'Updated' });
     })
     .catch((err) => {
       return res.status(500).json({
-        error: err.code
-      })
-    })
-}
+        error: err.code,
+      });
+    });
+};
 
-module.exports = { getTimes, postTime, deleteTime, putTime }
+module.exports = { getTimes, postTime, deleteTime, putTime };

@@ -9,5 +9,7 @@
         "ecmaVersion": 11
     },
     "rules": {
+        "no-useless-escape":"off",
+        "no-undef":"off"
     }
 }
