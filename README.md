@@ -1,2 +1,2 @@
-# timepanda
+# panda
 web host management service
