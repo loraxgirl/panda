@@ -2,6 +2,7 @@ const { db } = require('../util/admin');
 
 const getTimes = (req, res) => {
   db.collection('times')
+  .where('email', '==', req.user.email)
   .orderBy('createdAt', 'desc')
   .get()
   .then((data) => {
@@ -30,6 +31,7 @@ const postTime = (req, res) => {
   }
 
   const newTimeObject = {
+    email: req.user.email,
     title: req.body.title,
     body: req.body.body,
     createdAt: new Date().toISOString()

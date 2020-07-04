@@ -163,15 +163,15 @@ const getUser = (req, res) => {
 
 🚧 Needs attention 🚧 
 
-🔧 
-Error: Update() requires either a single JavaScript object or an alternating list of field/value pairs that can be followed by an optional precondition. Input is not an object.
+🔧  Error: Update() requires either a single JavaScript object or an alternating list of field/value pairs that can be followed by an optional precondition. Input is not an object.
     at updateUser (/Users/mat/Desktop/Development/async-timers/functions/api/auth_helpers.js:173:12)
 🔧 
 
 */
 const updateUser = (req, res) => {
   let document = db.collection('users').doc(`${req.user.email}`)
-  console.log(document)
+
+  console.log(req.body)
   document.update(req.body)
   .then(() => {
     return res.json({message : 'Updated'})
