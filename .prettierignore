@@ -1,0 +1,4 @@
+.github/
+functions/.eslintrc.json
+view/.eslintrc.json
+view/src/serviceWorker.js
