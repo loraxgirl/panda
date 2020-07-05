@@ -5,13 +5,24 @@ import cslx from 'clsx';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+const url = 'https://us-central1-async-706ad.cloudfunctions.net/api'
 
 export const Login = () => {
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data) => console.log(data);
+  
+  const onSubmit = (data) => {  
+    fetch('/login', {
+      method: 'post',
+      headers: {'Content-Type':'application/json'},
+      body: {
+        "email": data.email,
+        "password": data.password
+    }
+   });};
+
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <Form onSubmit={handleSubmit(onSubmit)} className={ cslx(styles.form, 'border')}>
       <div>
         <h2>Login</h2>
       </div>
@@ -27,7 +38,7 @@ export const Login = () => {
           {errors.password && <span>Password required</span>}      
       </Form.Group>
        
-      <Button variant="primary" type="submit">
+      <Button variant="btn btn-outline-success" type="submit">
         Login
       </Button>
 
@@ -39,7 +50,7 @@ export const Signup = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => console.log(data);
   return(
-    <Form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <Form onSubmit={handleSubmit(onSubmit)} className={ cslx(styles.form, 'border')}>
       <div>
         <h2>Sign up</h2>
       </div>
@@ -64,7 +75,7 @@ export const Signup = () => {
           {errors.comfirm_password && <span>Password does not match</span>}      
       </Form.Group>
 
-      <Button variant="primary" type="submit">
+      <Button variant="btn btn-outline-success" type="submit">
         Sign up
       </Button>
 
@@ -76,7 +87,7 @@ export const PostNewTimer = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => console.log(data);
   return(
-    <Form  onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <Form  onSubmit={handleSubmit(onSubmit)} className={ cslx(styles.form, 'border')}>
       <div>
         <h2>Create New Time</h2>
       </div>
@@ -103,7 +114,7 @@ export const PostNewTimer = () => {
         
       </div>
 
-      <Button type="submit">
+      <Button variant='btn btn-outline-success' type="submit">
           Create
       </Button>
     </Form>
@@ -114,7 +125,7 @@ export const UpdateTimer = () => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = (data) => console.log(data);
   return(
-    <Form  onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <Form  onSubmit={handleSubmit(onSubmit)} className={ cslx(styles.form, 'border')}>
       <div>
         <h2>Update Time</h2>
       </div>
@@ -124,24 +135,24 @@ export const UpdateTimer = () => {
     </Form.Group>
 
     <div className={styles.time_input_wrapper}>
-      <Form.Group>
+      <Form.Group className='styles.time_input_container'>
         <Form.Label>HH</Form.Label>
         <Form.Control type="num" name="hours" placeholder="hh" ref={register} className={styles.num_input}/>  
       </Form.Group>
 
-      <Form.Group>
+      <Form.Group className='styles.time_input_container'>
         <Form.Label>MM</Form.Label>
         <Form.Control type="num" name="minutes" placeholder="mm" ref={register} className={styles.num_input}/>
       </Form.Group>
       
-      <Form.Group>
+      <Form.Group className='styles.time_input_container'>
         <Form.Label>SS</Form.Label>
         <Form.Control type="num" name="seconds" placeholder="ss" ref={register} className={styles.num_input}/>  
       </Form.Group>
       
     </div>
 
-    <Button type="submit">
+    <Button variant='btn btn-outline-success' type="submit">
         Create
     </Button>
   </Form>
